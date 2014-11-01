@@ -36,16 +36,6 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.1.0'
-    compile files('libs/baseproject.jar')
-    compile files('libs/CocoUnion_AD_SDK_Android_v4.1.2.jar')
-    compile files('libs/comscore.jar')
-    compile files('libs/domob_android_sdk.jar')
-    compile files('libs/fastjson-1.1.24.jar')
-    compile files('libs/InMobi-4.0.4.jar')
-    compile files('libs/mAppTracker.jar')
-    compile files('libs/mobisageSDK.jar')
-    compile files('libs/playerBase.jar')
-    compile files('libs/tracking.jar')
-    compile files('libs/xadsdk.jar')
-    compile files('libs/YoukuAnalytics.jar')
+    compile 'com.alibaba:fastjson:1.1.33.android'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
