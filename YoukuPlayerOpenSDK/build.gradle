@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "21.1.0"
+
+    defaultConfig {
+        applicationId "com.youku.player.ui"
+        minSdkVersion 8
+        targetSdkVersion 19
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+
+        androidTest.setRoot('tests')
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile files('libs/baseproject.jar')
+    compile files('libs/CocoUnion_AD_SDK_Android_v4.1.2.jar')
+    compile files('libs/comscore.jar')
+    compile files('libs/domob_android_sdk.jar')
+    compile files('libs/fastjson-1.1.24.jar')
+    compile files('libs/InMobi-4.0.4.jar')
+    compile files('libs/mAppTracker.jar')
+    compile files('libs/mobisageSDK.jar')
+    compile files('libs/playerBase.jar')
+    compile files('libs/tracking.jar')
+    compile files('libs/xadsdk.jar')
+    compile files('libs/YoukuAnalytics.jar')
+}
