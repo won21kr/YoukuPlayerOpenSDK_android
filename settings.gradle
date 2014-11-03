@@ -1,2 +1,5 @@
 include ':YoukuPlayerOpenSDK'
 include ':PlayerDemo'
+
+project(':YoukuPlayerOpenSDK').name = SDK_PROJECT_NAME
+project(':PlayerDemo').name = DEMO_PROJECT_NAME
