@@ -76,12 +76,6 @@ android.libraryVariants.all { variant ->
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 发布 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 apply plugin: 'android-maven'
 
-/*task androidJavadocs(type: Javadoc) {
-    options.encoding = 'UTF-8'
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}*/
-
 task androidJavadocsJar(type: Jar, dependsOn: 'generatereleaseJavadoc')
 androidJavadocsJar.doFirst {
     classifier = 'javadoc'
@@ -98,16 +92,15 @@ artifacts {
     archives androidJavadocsJar
 }
 
-uploadArchives {
+/*uploadArchives {
     repositories.mavenDeployer {
-        /*pom.groupId = groupId
+        pom.groupId = groupId
         pom.artifactId = artifactId
-        pom.version = version*/
+        pom.version = version
         // Add other pom properties here if you want (developer details / licenses)
         //repository(url: "file://${localReleaseDest}")
-        repository(url: "file:///d/temp/release54321/")
     }
-}
+}*/
 
 if(!hasProperty('BINTRAY_USER') || !hasProperty('BINTRAY_KEY')) return
 
