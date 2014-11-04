@@ -33,6 +33,11 @@ android {
     }
 }
 
+repositories {
+    maven { url 'http://dl.bintray.com/orange/maven' }
+}
+
 dependencies {
-    compile project(':YoukuPlayerOpenSDK')
+    //compile project(':YoukuPlayerOpenSDK')
+    compile 'com.youku.player:sdk:1.0.0'
 }
