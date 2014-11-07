@@ -19,7 +19,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 21
         versionCode property('VERSION_CODE').toInteger()
-        versionName property('VERSION_CODE')
+        versionName property('VERSION_NAME')
     }
 
     sourceSets {
