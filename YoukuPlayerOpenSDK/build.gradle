@@ -113,7 +113,7 @@ bintray {
     publish = true //If version should be auto published after an upload
     pkg {
         repo = 'maven'
-        userOrg = 'orange'
+        userOrg = 'optimalorange'
         name = "${project.group}:${project.name}"
         websiteUrl = 'http://open.youku.com/down#on_android'
         issueTrackerUrl = 'https://github.com/OrangeTeam/YoukuPlayerOpenSDK_android/issues'
