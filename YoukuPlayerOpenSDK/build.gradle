@@ -116,8 +116,8 @@ bintray {
         userOrg = 'optimalorange'
         name = "${project.group}:${project.name}"
         websiteUrl = 'http://open.youku.com/down#on_android'
-        issueTrackerUrl = 'https://github.com/OrangeTeam/YoukuPlayerOpenSDK_android/issues'
-        vcsUrl = 'https://github.com/OrangeTeam/YoukuPlayerOpenSDK_android.git'
+        issueTrackerUrl = 'https://github.com/OptimalOrange/YoukuPlayerOpenSDK_android/issues'
+        vcsUrl = 'https://github.com/OptimalOrange/YoukuPlayerOpenSDK_android.git'
         licenses = ['Public Domain']
         labels = ['youku', 'Android']
         attributes = ['plat': ['Android']]
