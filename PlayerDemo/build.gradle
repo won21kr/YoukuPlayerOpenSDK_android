@@ -34,7 +34,7 @@ android {
 }
 
 repositories {
-    maven { url 'http://dl.bintray.com/orange/maven' }
+    maven { url 'http://dl.bintray.com/optimalorange/maven' }
 }
 
 dependencies {
