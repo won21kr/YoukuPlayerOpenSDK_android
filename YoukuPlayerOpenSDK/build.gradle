@@ -3,23 +3,24 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.dcendents:android-maven-plugin:1.1'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6"
+        // use for publishing
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.1"
     }
 }
+
 
 apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.0"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.youku.player.ui"
         minSdkVersion 8
         targetSdkVersion 21
-        versionCode property('VERSION_CODE').toInteger()
-        versionName property('VERSION_NAME')
+        versionCode VERSION_CODE.toInteger()
+        versionName VERSION_NAME
     }
 
     sourceSets {
@@ -46,8 +47,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.0'
-    compile 'com.android.support:appcompat-v7:21.0.0'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.alibaba:fastjson:1.1.33.android'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
@@ -55,8 +56,7 @@ dependencies {
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 生成Javadoc ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 窃取自 http://stackoverflow.com/questions/23297562/gradle-javadoc-and-android-documentation#answer-24026735
 android.libraryVariants.all { variant ->
-    task("generate${variant.name}Javadoc", type: Javadoc,
-            dependsOn: "extract${variant.name.capitalize()}Annotations") {
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
         failOnError = false
         options.encoding = 'UTF-8'
         source = variant.javaCompile.source
@@ -74,12 +74,12 @@ android.libraryVariants.all { variant ->
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 发布 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-apply plugin: 'android-maven'
+apply plugin: 'com.github.dcendents.android-maven'
 
-task androidJavadocsJar(type: Jar, dependsOn: 'generatereleaseJavadoc')
+task androidJavadocsJar(type: Jar, dependsOn: 'generateReleaseJavadoc')
 androidJavadocsJar.doFirst {
     classifier = 'javadoc'
-    from generatereleaseJavadoc.destinationDir
+    from generateReleaseJavadoc.destinationDir
 }
 
 task androidSourcesJar(type: Jar) {
@@ -104,6 +104,7 @@ artifacts {
 
 if(!hasProperty('BINTRAY_USER') || !hasProperty('BINTRAY_KEY')) return
 
+// see https://github.com/bintray/gradle-bintray-plugin
 apply plugin: 'com.jfrog.bintray'
 
 bintray {
