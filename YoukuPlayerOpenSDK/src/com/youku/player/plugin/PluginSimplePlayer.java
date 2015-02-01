@@ -36,6 +36,7 @@ import com.youku.player.ui.interf.IMediaPlayerDelegate;
 import com.youku.player.util.DetailMessage;
 import com.youku.player.util.DetailUtil;
 import com.youku.player.util.PlayCode;
+import com.youku.player.util.PlayerUiUtile;
 import com.youku.player.util.PlayerUtil;
 import com.youku.uplayer.MPPErrorCode;
 
@@ -126,7 +127,7 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 					error = false;
 					if (!Util.hasInternet()) {
 
-						// Util.showTips(R.string.download_no_network + "");
+						PlayerUtil.showTips(R.string.player_tips_no_network);
 						return;
 					}
 					if (null != retryView)
@@ -247,6 +248,7 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 		});
 		full_screenButton = (ImageButton) containerView
 				.findViewById(R.id.ib_detail_play_full);
+
 		full_screenButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -672,6 +674,7 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 			if (null != play_pauseButton)
 				play_pauseButton
 						.setImageResource(R.drawable.play_btn_pause_big_detail);
+
 		}
 	}
 
@@ -683,9 +686,10 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
+			
 			if (Util.hasInternet())
 				if (fromUser) {
-
+					Logger.d(TAG,"onProgressChanged: "+ progress);
 					seekBar.setProgress(progress);
 					currentTime.setText(PlayerUtil.getFormatTime(progress));
 				}
@@ -694,13 +698,14 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
-
+			Logger.d(TAG,"onStartTrackingTouch");
 		}
 
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
+			Logger.d(TAG,"onStopTrackingTouch");
 			seekChange(seekBar);
-
+			
 		}
 
 	};
@@ -739,6 +744,13 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 			controlLayout.setVisibility(View.GONE);
 			play_pauseButton.setVisibility(View.GONE);
 		} else {
+//			Logger.d("sgh","plugin_small, from local: " + mMediaPlayerDelegate.videoInfo.getPlayType());
+			if(mMediaPlayerDelegate.videoInfo != null && StaticsUtil.PLAY_TYPE_LOCAL
+							.equals(mMediaPlayerDelegate.videoInfo.getPlayType())){
+				full_screenButton.setVisibility(View.INVISIBLE);
+			}else{
+				full_screenButton.setVisibility(View.VISIBLE);
+			}
 			controlLayout.setVisibility(View.VISIBLE);
 			play_pauseButton.setVisibility(View.VISIBLE);
 			if (isLoading) {
@@ -959,15 +971,22 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 	@Override
 	public boolean onErrorListener(int what, int extra) {
 		Logger.e(TAG, "播放错误 onErrorListener-->" + what);
+		
 		// mMediaPlayerDelegate.mediaState = STATE.ERROR;
 		error = true;
 		if (null != mActivity && mActivity.isFinishing()) {
 			return true;
 		}
+		mMediaPlayerDelegate.release();
 
 		if (null != mMediaPlayerDelegate) {
-			if (mMediaPlayerDelegate.isFullScreen)
+			Logger.e(TAG, "播放错误 onErrorListener--> #0");
+			if (mMediaPlayerDelegate.isFullScreen){
+				showAlert();
 				return false;
+			}
+				
+			Logger.e(TAG, "播放错误 onErrorListener--> #1");
 			mMediaPlayerDelegate.isStartPlay = false;
 			if (mMediaPlayerDelegate.isADShowing) {
 				showAlert();
@@ -1001,7 +1020,7 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 				if (what == MPPErrorCode.MEDIA_INFO_NETWORK_DISSCONNECTED) {
 					playComplete();
 				} else if (what == MPPErrorCode.MEDIA_INFO_DATA_SOURCE_ERROR) {
-					// Util.showTips("本地文件已损坏");
+					 PlayerUtil.showTips("本地文件已损坏");
 					Track.onError(mActivity,
 							mMediaPlayerDelegate.videoInfo.getVid(),
 							Profile.GUID,
@@ -1033,13 +1052,13 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 							.equals(mMediaPlayerDelegate.videoInfo.playType)) {
 				if (what == MPPErrorCode.MEDIA_INFO_NETWORK_DISSCONNECTED) {
 					// if (Util.hasInternet())
-					// Util.showTips(HttpRequestManager.STATE_ERROR_TIMEOUT);
+					 PlayerUtil.showTips(R.string.tips_not_responding);
 				} else if (what == MPPErrorCode.MEDIA_INFO_DATA_SOURCE_ERROR) {
 					// if (Util.hasInternet())
-					// Util.showTips(HttpRequestManager.STATE_ERROR_TIMEOUT);
+					PlayerUtil.showTips(R.string.tips_not_responding);
 				} else if (what == MPPErrorCode.MEDIA_INFO_PREPARE_TIMEOUT_ERROR) {
 					// if (Util.hasInternet())
-					// Util.showTips(HttpRequestManager.STATE_ERROR_TIMEOUT);
+					PlayerUtil.showTips(R.string.tips_not_responding);
 				}
 			}
 		}
@@ -1049,9 +1068,12 @@ public class PluginSimplePlayer extends PluginOverlay implements DetailMessage {
 	}
 
 	public void showAlert() {
+		Logger.e(TAG, "showAlert()--> #0");
 		if (null != mMediaPlayerDelegate
 				&& null != mMediaPlayerDelegate.videoInfo
 				&& mMediaPlayerDelegate.videoInfo.getPlayType() == StaticsUtil.PLAY_TYPE_LOCAL) {
+			Logger.e(TAG, "showAlert()--> #1");
+			PlayerUtil.showTips(R.string.player_error_native);
 			alertRetry(mActivity, R.string.player_error_native);
 		} else {
 			alertRetry(mActivity, R.string.Player_error_timeout);

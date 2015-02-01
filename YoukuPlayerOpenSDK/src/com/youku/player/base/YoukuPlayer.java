@@ -2,12 +2,11 @@ package com.youku.player.base;
 
 import android.util.Log;
 
-import com.youku.player.apiservice.ICacheInfo;
-import com.youku.player.apiservice.IUserInfo;
-import com.youku.player.apiservice.IVideoHistoryInfo;
-import com.youku.player.goplay.Profile;
+import com.youku.player.YoukuPlayerBaseApplication;
 import com.youku.player.ui.interf.IMediaPlayerDelegate;
 import com.youku.player.util.PlayerUtil;
+import com.youku.service.download.DownloadInfo;
+import com.youku.service.download.DownloadManager;
 
 public class YoukuPlayer {
 
@@ -54,6 +53,22 @@ public class YoukuPlayer {
 	public void playVideoWithPassword(final String vid, final String password) {
 		Log.d("sgh","[YoukuPlayer] playVideoWithPassword");
 		mMediaPlayerDelegate.playVideoWithPassword(vid, password);
+	}
+	
+	public void playLocalVideo(final String vid, String url, String videoTitle) {
+		Log.d("sgh","[YoukuPlayer] playLocalVideo #1");		
+		mMediaPlayerDelegate.playLocalVideo(vid,!PlayerUtil.useUplayer() ? url : PlayerUtil.getM3u8File(url),videoTitle);
+	}
+	public void playLocalVideo(String vid, String url, String title, int progress){
+		Log.d("sgh","[YoukuPlayer] playLocalVideo #2");
+		mMediaPlayerDelegate.playLocalVideo(vid, title, progress);
+	}
+	
+	
+	public void playLocalVideo(String local_vid){
+		DownloadInfo downloadInfo = DownloadManager.getInstance().getDownloadInfo(local_vid);
+		String savePath = downloadInfo.savePath;		
+		playLocalVideo(local_vid, savePath + (YoukuPlayerBaseApplication.isHighEnd ? "/youku.m3u8" : "/1.3gp"), downloadInfo.title);
 	}
 
 

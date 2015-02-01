@@ -42,4 +42,12 @@
 
     <!-- youku ad icon background color -->
     <color name="yp_ad_background_color_youku">#cc292929</color>
+    
+	<drawable name="tab_indicator_normal">#ffffffff</drawable>
+	<drawable name="tab_indicator_pressed_color">#fff0f0f0</drawable>   
+	
+    <color name="app_background">#e2e2e2</color>
+    <color name="player_gray">#ff888888</color>   
+    
+    <color name="translucent_background">#00000000</color>    	
 </resources>

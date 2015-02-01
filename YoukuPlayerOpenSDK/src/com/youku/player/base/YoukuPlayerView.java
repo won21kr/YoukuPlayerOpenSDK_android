@@ -29,7 +29,7 @@ import android.widget.VideoView;
 import com.baseproject.utils.Logger;
 import com.baseproject.utils.UIUtils;
 import com.baseproject.utils.Util;
-import com.youku.player.ApiManager;
+import com.youku.player.ApiBaseManager;
 import com.youku.player.NewSurfaceView;
 import com.youku.player.Track;
 import com.youku.player.config.MediaPlayerConfiguration;
@@ -701,6 +701,26 @@ public class YoukuPlayerView extends PluginOverlay implements DetailMessage,
 		
 		initialize(mYoukuBaseActivity, 10001, "4e308edfc33936d7", ver, ua, false,-7L,"631l1i1x3fv5vs2dxlj5v8x81jqfs2om");
 	}
+	
+	public void initialize(YoukuBasePlayerActivity mYoukuBaseActivity,String pid){
+		PackageManager pm = mYoukuBaseActivity.getPackageManager();
+		String ver = "4.1";
+		try {
+			ver = pm.getPackageInfo(mYoukuBaseActivity.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		boolean isTablet = (this.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+		String ua = (isTablet ? "Youku HD;" : "Youku;") + ver
+				+ ";Android;" + android.os.Build.VERSION.RELEASE + ";"
+				+ android.os.Build.MODEL;
+		
+		Logger.d(TAG,"initialize(): ua = " + ua);
+		
+		initialize(mYoukuBaseActivity, 10001, pid, ver, ua, false,-7L,"631l1i1x3fv5vs2dxlj5v8x81jqfs2om");
+	}
 
 	/**
 	 * 初始化接口
@@ -720,7 +740,7 @@ public class YoukuPlayerView extends PluginOverlay implements DetailMessage,
 	public void initialize(YoukuBasePlayerActivity mYoukuBaseActivity,
 			int platformId, String pid, String verName, String userAgent,
 			boolean useSystemPlayer, Long timeStamp, String secret) {
-		if(!ApiManager.getInstance().getApiServiceState()) return;
+//		if(!ApiManager.getInstance().getApiServiceState()) return;
 		long begin = SystemClock.elapsedRealtime();
 		mActivity = mYoukuBaseActivity;
 		Profile.USE_SYSTEM_PLAYER = useSystemPlayer;

@@ -48,7 +48,7 @@ import com.baseproject.utils.Logger;
 import com.baseproject.utils.UIUtils;
 import com.baseproject.utils.Util;
 import com.youku.analytics.data.Device;
-import com.youku.player.ApiManager;
+import com.youku.player.ApiBaseManager;
 import com.youku.player.NewSurfaceView;
 import com.youku.player.Track;
 import com.youku.player.ad.AdType;
@@ -978,7 +978,7 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 		Logger.d("NewDetailActivity#onPause()", "onpause");
 		onPause = true;
 		super.onPause();
-		if(!ApiManager.getInstance().getApiServiceState())return;
+//		if(!ApiManager.getInstance().getApiServiceState())return;
 		if (pluginManager != null) {
 			// 通知插件Activity进入onPause
 			pluginManager.onPause();
@@ -1020,7 +1020,7 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if(!ApiManager.getInstance().getApiServiceState())return;
+//		if(!ApiManager.getInstance().getApiServiceState())return;
 		if (isImageADShowing && mImageAD != null) {
 			if (mImageAD.getAdType() == AdVender.INMOBI) {
 				mImageAD.destroyInmobiAd();
@@ -1041,10 +1041,10 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 		onPause = false;
 		setTitle("");
 		super.onResume();
-		if(!ApiManager.getInstance().getApiServiceState()){
-			showApiServiceNotAvailableDialog();
-			return;
-		}else{
+//		if(!ApiManager.getInstance().getApiServiceState()){
+//			showApiServiceNotAvailableDialog();
+//			return;
+//		}else{
 			if (null != mYoukuPlayerView) {
 				mYoukuPlayerView.onConfigrationChange();
 			}
@@ -1127,7 +1127,7 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 				mImageAD.setVisibility(View.VISIBLE);
 				mImageAD.startTimer();
 			}
-		}
+//		}
 
 	}
 
@@ -1195,7 +1195,7 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 			mediaPlayerDelegate.mediaPlayer.setOnPreparedListener(null);
 			mediaPlayerDelegate.mediaPlayer.clearListener();
 			mediaPlayerDelegate.mediaPlayer = null;
-			RemoteInterface.clear();
+//			RemoteInterface.clear();
 			mPluginSmallScreenPlay = null;
 			pluginManager = null;
 			mPluginFullScreenPlay = null;
@@ -1553,10 +1553,10 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 
 	private void setPlayerSmall(boolean setRequsetOreitation) {			//-------》内部使用
 		mediaPlayerDelegate.isFullScreen = false;
-		if (PlayerUtil.isYoukuTablet(this)
-				&& isLand()) {
-			layoutHandler.sendEmptyMessageDelayed(GET_LAND_PARAMS, 0);
-		} else {
+//		if (PlayerUtil.isYoukuTablet(this)
+//				&& isLand()) {
+//			layoutHandler.sendEmptyMessageDelayed(GET_LAND_PARAMS, 0);
+//		} else {
 			Message message = layoutHandler.obtainMessage();
 			message.what = GET_PORT_PARAMS;
 			message.obj = setRequsetOreitation;
@@ -1564,7 +1564,7 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 			layoutHandler.sendMessage(message);
 
 			mYoukuPlayerView.setVerticalLayout();
-		}
+//		}
 	}
 
 	public void goSmall() {
@@ -1679,6 +1679,7 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 	}
 
 	protected void onkeyback() {
+		Logger.d("sgh","onkeyback");
 		try {
 			if (!mediaPlayerDelegate.isStartPlay
 					&& !mediaPlayerDelegate.isVVBegin998Send) {
@@ -1740,7 +1741,8 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 			}
 		} catch (Exception e) {
 		} finally {
-			setResult(RESULT_OK);
+//			setResult(RESULT_OK);
+			Logger.d("sgh","onkeyback finally finish");
 			finish();
 		}
 	}
@@ -1811,8 +1813,9 @@ public abstract class YoukuBasePlayerActivity extends IBaseActivity
 
 	@Override
 	public void onBackPressed() {										//android系统调用
+		Logger.d("sgh", "onBackPressed before super");
 		super.onBackPressed();
-		Logger.d("lelouch", "onBackPressed");
+		Logger.d("sgh", "onBackPressed");
 		onkeyback();
 	}
 

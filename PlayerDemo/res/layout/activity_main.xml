@@ -31,7 +31,22 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="登陆状态" />    
+        android:text="登陆状态" />
+    
+    <Button
+        android:id="@+id/btn_downloaded"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="已经下载的视频" />  
+        
+    <Button
+        android:id="@+id/btn_downloading"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="正在下载的视频" />
+    
         
     <EditText
         android:id="@+id/vid"

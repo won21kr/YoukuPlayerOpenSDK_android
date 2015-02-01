@@ -1,3 +1,4 @@
+include ':YoukuLoginSDK'
 include ':YoukuPlayerOpenSDK'
 include ':PlayerDemo'
 

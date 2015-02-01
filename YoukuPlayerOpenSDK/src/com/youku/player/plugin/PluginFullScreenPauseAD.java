@@ -50,14 +50,18 @@ import com.youku.player.base.YoukuBasePlayerActivity;
 import com.youku.player.config.MediaPlayerConfiguration;
 import com.youku.player.goplay.AdvInfo;
 import com.youku.player.goplay.IGetAdvCallBack;
+import com.youku.player.goplay.PlayerCustomInfoManager;
 import com.youku.player.goplay.Profile;
 import com.youku.player.goplay.StaticsUtil;
 import com.youku.player.goplay.VideoAdvInfo;
+import com.youku.player.module.PlayerCustomErrorInfo;
+import com.youku.player.module.PlayerCustomInfo;
 import com.youku.player.module.VideoUrlInfo;
 import com.youku.player.module.VideoUrlInfo.Source;
 import com.youku.player.ui.R;
 import com.youku.player.ui.interf.IGetVideoAdvService;
 import com.youku.player.ui.interf.IMediaPlayerDelegate;
+import com.youku.player.ui.interf.IPlayerCustomCallback;
 import com.youku.player.util.DetailMessage;
 import com.youku.player.util.DisposableStatsUtils;
 import com.youku.player.util.SessionUnitil;
@@ -356,15 +360,49 @@ public class PluginFullScreenPauseAD extends PluginOverlay implements
 			return;
 		}
 
-		boolean isOfflineAd = isLocalVideo(mMediaPlayerDelegate.videoInfo);
+		final boolean isOfflineAd = isLocalVideo(mMediaPlayerDelegate.videoInfo);
 		// 只有youku请求离线广告
 		if (isOfflineAd && !MediaPlayerConfiguration.getInstance().showOfflineAd())
 			return;
 		pauseADcanceled = false;
 //		IGetVideoAdvService getVideoAdvService = new GetVideoAdvService();
+
+		PlayerCustomInfoManager customInfoManager = new PlayerCustomInfoManager();
+		customInfoManager.getPlayerCustomInfo(mMediaPlayerDelegate.videoInfo.getVid(), new IPlayerCustomCallback(){
+
+			@Override
+			public void onSuccess(PlayerCustomInfo playerCustomInfo) {
+				// TODO Auto-generated method stub
+				Logger.d("PlayFlow","pause ad, get player custom info atm: " + playerCustomInfo.getAtm());
+				String atm = playerCustomInfo.getAtm();
+				String token = playerCustomInfo.getToken();
+				
+				getPauseAd(atm,isOfflineAd);
+			}
+
+			@Override
+			public void onError(PlayerCustomErrorInfo errorInfo) {
+				// TODO Auto-generated method stub
+				int errorCode = errorInfo.getErrorCode();
+				Logger.e("PlayFlow","pause ad, verify client_id:" + errorCode+ " des: " + errorInfo.getDescription());
+				getPauseAd("",isOfflineAd);
+			}
+
+			@Override
+			public void onFailed(GoplayException e) {
+				// TODO Auto-generated method stub
+				Logger.e("PlayFlow","pause ad, get atm error:" + e.getErrorInfo());
+				getPauseAd("",isOfflineAd);
+			}
+			
+		});
+
+	}
+	
+	private void getPauseAd(String atm,boolean isOfflineAd){
 		IGetVideoAdvService getVideoAdvService = com.youku.player.util.RemoteInterface.getVideoAdvService;
 		if (!TextUtils.isEmpty(mMediaPlayerDelegate.videoInfo.getVid())) {
-			getVideoAdvService.getVideoAdv("",false,
+			getVideoAdvService.getVideoAdv(atm,false,
 					mMediaPlayerDelegate.videoInfo.getVid(), mActivity,
 					mMediaPlayerDelegate.isFullScreen, isOfflineAd,
 					new IGetAdvCallBack() {

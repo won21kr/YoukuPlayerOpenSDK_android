@@ -69,7 +69,7 @@
             layout="@layout/yp_detail_retry"
             android:visibility="gone" />
 
-        <com.youku.player.ui.widget.Loading
+        <com.youku.player.ui.widget.PlayerLoading
             android:id="@+id/newLoading_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

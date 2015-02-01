@@ -199,11 +199,11 @@
 
     
     <style name="NotificationText">
-        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="NotificationTitle">
-        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -833,6 +833,37 @@
     
     <style name="tudou_encrypt_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-</style>
+        <item name="android:windowNoTitle">true</item> 
+	</style>
+	
+    <style name="homepage_title_txt">
+        <item name="android:textColor">#ff333333</item>
+        <item name="android:shadowColor">#ffffffff</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">@dimen/channeltab_txt_textsize</item>
+    </style>    
+    
+    <style name="toolbar_btn_txt">
+        <item name="android:textColor">#ff666666</item>
+        <item name="android:shadowColor">#ffffffff</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">@dimen/toolbar_btn_txt_textsize</item>
+    </style> 
+    
+    <style name="homepage_item_title_first">
+        <item name="android:textColor">#ff444444</item>
+        <item name="android:textSize">@dimen/homepage_item_title_first</item>
+    </style> 
+    
+    <style name="history_item_txt_first">
+        <item name="android:textSize">@dimen/history_item_txt_first_textsize</item>
+    </style> 
+    <style name="history_item_txt_second">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">@dimen/history_item_txt_second_textsize</item>
+    </style>       
 </resources>
